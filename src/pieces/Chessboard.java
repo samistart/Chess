@@ -8,6 +8,7 @@ import pieces.AbstractPiece;
 
 public class Chessboard {
 
+	private Boolean gameRunning;
 	private AbstractPiece[][] chessboard = new AbstractPiece[numOfRowsAndCols][numOfRowsAndCols];// [row][column]
 	Scanner user_input = new Scanner(System.in);
 	private static final int numOfRowsAndCols = 8;
@@ -23,7 +24,12 @@ public class Chessboard {
 	public Chessboard() {
 
 		initialiseBoard(chessboard);
+		gameRunning=true;
 
+	}
+
+	public Boolean getGameRunning() {
+		return this.gameRunning;
 	}
 
 	private static void initialiseBoard(AbstractPiece[][] chessboard) {
@@ -194,9 +200,14 @@ public class Chessboard {
 	}
 
 	public void move() {
-		
-		System.out.println("___________________________________________________\n"
-				+ "Score: White "+whiteScore+" | " +blackScore+" Black");
+
+		System.out
+				.println("___________________________________________________\n"
+						+ "Score: White "
+						+ whiteScore
+						+ " | "
+						+ blackScore
+						+ " Black");
 
 		if (invalidMove) {
 			System.err.println("Move is invalid. Please try again:");
@@ -217,6 +228,12 @@ public class Chessboard {
 		}
 
 		move = user_input.nextLine();
+		
+		if (move.equalsIgnoreCase("exit")) {
+			gameRunning=false;
+			System.out.println("Thanks for playing.");
+			return;
+		}
 
 		// convert to lower case
 		String lowerCase = move.toLowerCase();
