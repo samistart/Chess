@@ -6,6 +6,16 @@ import java.util.Scanner;
 
 import pieces.AbstractPiece;
 
+/**
+ * An 8x8 Chessboard with a console display and string user input Has some basic
+ * rules for checking if a move is valid or not Keeps track of the score of each
+ * player by the value of pieces they take For best results construct a
+ * Chessboard(), call move() and call printBoard().
+ * 
+ * @author SamiStart
+ *
+ */
+
 public class Chessboard {
 
 	private Boolean gameRunning;
@@ -21,17 +31,35 @@ public class Chessboard {
 	// Holds string with the user input for move instructions
 	String move;
 
+	/**
+	 * Constructs a Chessboard object and populates it with pieces Starts a
+	 * chess game running.
+	 */
+
 	public Chessboard() {
 
 		initialiseBoard(chessboard);
-		gameRunning=true;
+		gameRunning = true;
 
 	}
 
+	/**
+	 * This gets attribute Boolean gameRunning if this is false then you should
+	 * stop calling move() and printBoard() and close the Chessboard()
+	 * 
+	 * @return a Boolean that is false if the user wants to exit called
+	 *         gameRunning
+	 */
 	public Boolean getGameRunning() {
 		return this.gameRunning;
 	}
 
+	/**
+	 * Populates the chessboard of AbstractPiece with the correct pieces and
+	 * randomly assigns whether white or black moves first
+	 * 
+	 * @param chessboard
+	 */
 	private static void initialiseBoard(AbstractPiece[][] chessboard) {
 		// a chessboard with 8x8 matrix of pieces
 		// rows [0] and [1] are black
@@ -109,6 +137,11 @@ public class Chessboard {
 
 	}
 
+	/**
+	 * Prints out the unicode for each character to the console using the draw()
+	 * method from the relevant piece's class followed by tabs for tidiness.
+	 * Prints numbers 1-8 alongside rows and letters a-h alongside columns
+	 */
 	public void printBoard() {
 
 		// must take an 8x8 array of Chessmen (chess pieces),
@@ -130,10 +163,17 @@ public class Chessboard {
 		}
 	}
 
-	private static boolean moveValid(AbstractPiece[][] chessboard) {
-		// method which takes a chessboard and [i, j] integer coordinates of the
-		// old and new position and returns true if the move is valid and
-		// false otherwise
+	/**
+	 * Checks if a move is valid with 2 steps. Step 1: some general rule checks
+	 * that any piece should obey. 
+	 * Step 2: The specific isMoveValid() method from
+	 * a piece's class that checks rules specific for that piece, e.g that a
+	 * rook moves in straight lines.
+	 * 
+	 * @return True if valid, false if invalid.
+	 */
+
+	private boolean moveValid() {
 
 		// invalid if the move origin or destination is outside the board
 
@@ -187,6 +227,10 @@ public class Chessboard {
 
 	}
 
+	/**
+	 * A private method called to update the score of whoever's turn it is after
+	 * they take an opposing piece
+	 */
 	private void updateScore() {
 		if (chessboard[destRow][destCol] == null) {
 			return;
@@ -199,6 +243,14 @@ public class Chessboard {
 		}
 	}
 
+	/**
+	 * Take user input for the instructions for move in the form
+	 * "start coords to destination coords", e.g. "d2 to d3" and converts this
+	 * string to array coordinates for the Chessboard. Checks if the move is
+	 * valid using moveValid(). If valid moves piece to destination on
+	 * Chessboard and updates score with updateScore(). If invalid prints error
+	 * message and recursively calls itself.
+	 */
 	public void move() {
 
 		System.out
@@ -228,9 +280,9 @@ public class Chessboard {
 		}
 
 		move = user_input.nextLine();
-		
+
 		if (move.equalsIgnoreCase("exit")) {
-			gameRunning=false;
+			gameRunning = false;
 			System.out.println("Thanks for playing.");
 			return;
 		}
@@ -252,7 +304,7 @@ public class Chessboard {
 		destRow = 7 - (components[2].charAt(1) - '1');
 		destCol = components[2].charAt(0) - 'a';
 
-		if (moveValid(chessboard)) {
+		if (moveValid()) {
 			updateScore();
 			// put piece in destination
 			chessboard[destRow][destCol] = chessboard[srcRow][srcCol];
